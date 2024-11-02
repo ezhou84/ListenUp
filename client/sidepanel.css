@@ -25,6 +25,36 @@ h1 {
   cursor: pointer;
 }
 
+#aiPromptForm {
+  display: flex;
+  gap: 10px;
+  background: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+#aiPromptForm input[type="text"] {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+#aiPromptForm button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#aiPromptForm button:hover {
+  background-color: #0056b3;
+}
+
 #title-input {
   font-size: 18px;
   line-height: 24px;
@@ -90,7 +120,7 @@ h1 {
 
 .transcription {
   width: 280px;
-  height: 300px;
+  height: 280px;
   background-color: #F9FAFE;
   color: #2C91FF;
   font-size: 16px;
@@ -100,6 +130,63 @@ h1 {
   overflow: auto;
   word-wrap: break-word;
   margin-bottom: 20px;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.transcription:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.section-container {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.transcription:hover .section-container {
+  opacity: 1;
+}
+
+.section-container .section-option {
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 50%;
+  background-color: #2C91FF;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s, background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fly-out effect on hover */
+.transcription:hover .section-container .section-option:nth-child(1) {
+  transform: translate(0px, 5px);
+}
+
+.transcription:hover .section-container .section-option:nth-child(2) {
+  transform: translate(0px, 5px);
+}
+
+.transcription:hover .section-container .section-option:nth-child(3) {
+  transform: translate(0px, 5px);
+}
+
+.section-container .section-option:hover {
+  background-color: #0056b3;
 }
 
 .controls {
@@ -171,27 +258,18 @@ h1 {
   font-size: 14px;
 }
 
-/* 施工中 */
-
-
-
+/* under construction */
 
 .button.enable {
   background-color: #D9D9D9;
-  /* 禁用状态的背景颜色 */
   color: #A9A9A9;
-  /* 禁用状态的文字颜色 */
   cursor: not-allowed;
-  /* 鼠标指针变为禁止样式 */
 }
 
 .button.disabled {
   background-color: #D9D9D9;
-  /* 禁用状态的背景颜色 */
   color: #A9A9A9;
-  /* 禁用状态的文字颜色 */
   cursor: not-allowed;
-  /* 鼠标指针变为禁止样式 */
 }
 
 .icon {
@@ -208,44 +286,30 @@ h1 {
 
 .progress-container {
   display: flex;
-  /* 使用 Flexbox 来并排显示 */
   align-items: center;
-  /* 垂直居中 */
   margin: 20px;
 }
 
 .progress-bar {
   width: 300px;
-  /* 进度条的宽度 */
   height: 20px;
-  /* 进度条的高度 */
   background-color: #D9D9D9;
-  /* 非录音时的背景颜色 */
   border-radius: 10px;
-  /* 圆角 */
   position: relative;
   overflow: hidden;
-  /* 防止内部元素溢出 */
   margin-right: 10px;
-  /* 进度条和时间之间的间隔 */
 }
 
 .progress {
   height: 100%;
-  /* 进度条的高度 */
   background-color: #2C91FF;
-  /* 录音时的颜色 */
   width: 0;
-  /* 默认宽度为 0 */
   transition: width 0.1s;
-  /* 进度条变化的动画效果 */
 }
 
 .timer {
   font-size: 16px;
-  /* 字体大小 */
   color: #121212;
-  /* 字体颜色 */
 }
 
 .hidden {
