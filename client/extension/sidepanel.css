@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  padding: 20px;
+  max-width: 100%;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  margin: 0;
+  color: #2C91FF;
+}
+
+#logo {
+  background-color: #2C91FF;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+#title-input {
+  font-size: 18px;
+  line-height: 24px;
+  border: none;
+  outline: none;
+  margin-bottom: 8px;
+}
+
+#record-button-outer {
+  background-color: white;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+}
+
+#record-button-outer:hover {
+  background-color: rgba(255, 59, 48, 0.1);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
+}
+
+#record-menu {
+  width: 244px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 42px;
+}
+
+#lap:disabled {
+  cursor: not-allowed;
+}
+
+#lap:disabled svg {
+  fill: #D9D9D9;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+.description {
+  color: #A9A9A9;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 20px;
+  ;
+}
+
+.transcription {
+  width: 280px;
+  height: 300px;
+  background-color: #F9FAFE;
+  color: #2C91FF;
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 12px;
+  padding: 10px;
+  overflow: auto;
+  word-wrap: break-word;
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.control-button-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.control-button-outer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 46px;
+}
+
+.tooltip {
+  display: inline-block;
+  padding: 8px 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  background-color: white;
+  color: #121212;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+
+  font-size: 12px;
+
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  margin-bottom: 10px;
+}
+
+.control-button-outer:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.record-option {
+  background-color: white;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.record-option:hover {
+  background-color: rgba(44, 145, 255, 0.1);
+}
+
+.date {
+  color: #666;
+  font-size: 14px;
+}
+
+/* 施工中 */
+
+
+
+
+.button.enable {
+  background-color: #D9D9D9;
+  /* 禁用状态的背景颜色 */
+  color: #A9A9A9;
+  /* 禁用状态的文字颜色 */
+  cursor: not-allowed;
+  /* 鼠标指针变为禁止样式 */
+}
+
+.button.disabled {
+  background-color: #D9D9D9;
+  /* 禁用状态的背景颜色 */
+  color: #A9A9A9;
+  /* 禁用状态的文字颜色 */
+  cursor: not-allowed;
+  /* 鼠标指针变为禁止样式 */
+}
+
+.icon {
+  fill: #121212;
+}
+
+.button.enable .icon {
+  fill: #2C91FF;
+}
+
+.button.disabled .icon {
+  fill: #D9D9D9;
+}
+
+.progress-container {
+  display: flex;
+  /* 使用 Flexbox 来并排显示 */
+  align-items: center;
+  /* 垂直居中 */
+  margin: 20px;
+}
+
+.progress-bar {
+  width: 300px;
+  /* 进度条的宽度 */
+  height: 20px;
+  /* 进度条的高度 */
+  background-color: #D9D9D9;
+  /* 非录音时的背景颜色 */
+  border-radius: 10px;
+  /* 圆角 */
+  position: relative;
+  overflow: hidden;
+  /* 防止内部元素溢出 */
+  margin-right: 10px;
+  /* 进度条和时间之间的间隔 */
+}
+
+.progress {
+  height: 100%;
+  /* 进度条的高度 */
+  background-color: #2C91FF;
+  /* 录音时的颜色 */
+  width: 0;
+  /* 默认宽度为 0 */
+  transition: width 0.1s;
+  /* 进度条变化的动画效果 */
+}
+
+.timer {
+  font-size: 16px;
+  /* 字体大小 */
+  color: #121212;
+  /* 字体颜色 */
+}
+
+.hidden {
+  display: none;
+}

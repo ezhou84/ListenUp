@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "AI-Screen-Reader",
+  "version": "1.0",
+  "description": "screen reader",
+  "author": "",
+  "permissions": [
+    "sidePanel",
+    "storage",
+    "scripting",
+    "tabCapture",
+    "downloads"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
