@@ -90,14 +90,6 @@ h1 {
   padding: 8px 42px;
 }
 
-#lap:disabled {
-  cursor: not-allowed;
-}
-
-#lap:disabled svg {
-  fill: #D9D9D9;
-}
-
 .container {
   display: flex;
   flex-direction: column;
@@ -115,12 +107,11 @@ h1 {
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 20px;
-  ;
 }
 
 .transcription {
   width: 280px;
-  height: 280px;
+  height: 360px;
   background-color: #F9FAFE;
   color: #2C91FF;
   font-size: 16px;
@@ -129,12 +120,14 @@ h1 {
   padding: 1rem;
   overflow: auto;
   word-wrap: break-word;
+  margin-top: 20px;
   margin-bottom: 20px;
 
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 }
 
 .transcription:hover {
