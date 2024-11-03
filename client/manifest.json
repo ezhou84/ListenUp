@@ -9,7 +9,8 @@
     "storage",
     "scripting",
     "tabCapture",
-    "downloads"
+    "downloads",
+    "activeTab"
   ],
   "background": {
     "service_worker": "background.js"
@@ -19,5 +20,17 @@
   },
   "action": {
     "default_popup": "index.html"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["index.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
