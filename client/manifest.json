@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AI-Screen-Reader",
+  "name": "ListenUp",
   "version": "1.0",
-  "description": "screen reader",
+  "description": "A screen reader that provides a user-friendly experience, making information more engaging and accessible for all users.",
   "author": "",
   "permissions": [
     "sidePanel",
@@ -29,14 +29,22 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["index.html"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "index.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "icons": {
@@ -44,5 +52,7 @@
     "48": "icons/icon.png",
     "128": "icons/icon.png"
   },
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": [
+    "<all_urls>"
+  ]
 }
