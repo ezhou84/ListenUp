@@ -25,23 +25,19 @@ document.addEventListener('click', async function (event) {
 
     if (content) {
         if (isImage) {
-            console.log("isImage", isImage);
 
             try {
-                const base64Image = await urlToBase64(content); // Convert image URL to Base64
                 const summary = await getSummary(content); // Use the Base64 string for summary
                 var msg = new SpeechSynthesisUtterance();
                 msg.text = summary;
-                console.log("summary", summary);
 
-                alert("img summary: " + summary);
+                alert("Image Summary:\n" + summary);
                 window.speechSynthesis.speak(msg);
             } catch (error) {
                 console.error("Error processing image:", error);
             }
         } else {
             chrome.storage.local.set({ selectedContent: content }, () => {
-                console.log("Content saved:", content);
                 var msg = new SpeechSynthesisUtterance();
                 msg.text = content;
                 window.speechSynthesis.speak(msg);
@@ -84,5 +80,5 @@ const getSummary = async (content) => {
     }
 
     const data = await response.json();
-    return data.summary;
+    return data.response;
 }

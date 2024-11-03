@@ -6,11 +6,11 @@ from io import BytesIO
 import requests
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from langchain_core.messages import HumanMessage
 from langchain_mistralai import ChatMistralAI
 from PIL import Image
 from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
@@ -43,21 +43,9 @@ def image_summarize(prompt, image_url):
 # Initialize FastAPI app
 app = FastAPI()
 
-origins = [
-    "*",
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:8080",
-    "http://localhost:3000",
-    "http://localhost:8000",
-    "https://play.ht/blog/speechify-text-to-speech-javascript-api/"
-]
-
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -92,7 +80,6 @@ def process_image(image_url):
 
     # Summary Prompt
     summary_prompt_text = f"""Summarize this image in at most 3 sentences. Include as much relevant detail as possible that would be important for someone with vision loss or blindness. Be as specific as possible, such as naming people you can recognize. Describe only what you see in the image but try to extrapolate as much as possible; if you can identify and put a name to things in the image, name them. Also, the image URL may be relevant in order to name or determine certain details in the image, which is {image_url}."""
-    print(summary_prompt_text)
 
     summary_result = image_summarize(summary_prompt_text, base64_image)
 
