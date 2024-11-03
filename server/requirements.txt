@@ -1,0 +1,7 @@
+fastapi
+requests
+python-dotenv
+Pillow
+langchain-core
+langchain-mistralai
+uvicorn
