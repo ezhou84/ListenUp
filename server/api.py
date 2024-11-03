@@ -51,7 +51,6 @@ def summarize(prompt, image_url=None):
         )
     return msg.content
 
-# Initialize FastAPI app
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -67,6 +66,9 @@ class ImageRequest(BaseModel):
     
 class TextRequest(BaseModel):
     text: str
+
+class ScreenRequest(BaseModel):
+    base64str: str
 
 def convert_image_to_base64(image_url):
     # Download the image from the URL
@@ -87,43 +89,50 @@ def convert_image_to_base64(image_url):
     
     return data_url_prefix + img_str  # Return the complete data URL
 
-def process_request(url_content, image):
-    if image:
-        base64_image = convert_image_to_base64(url_content)
-        summary_prompt_text = f"""In a maximum of 3 sentences, summarize this image. Include as much relevant detail as possible that would be important for someone with vision loss or blindness. Be as specific as possible, such as naming people you can recognize. Describe only what you see in the image but try to extrapolate as much as possible; if you can identify and put a name to things in the image, name them. Also, the image URL may be relevant in order to name or determine certain details in the image, which is {url_content}. Again, your response must not be more than 3 sentences."""
+def process_request(content, type):
+    if type == "image":
+        base64_image = convert_image_to_base64(content)
+        summary_prompt_text = f"""In a maximum of 3 sentences, summarize this image. Include as much relevant detail as possible that would be important for someone with vision loss or blindness. Be as specific as possible, such as naming people you can recognize. Describe only what you see in the image but try to extrapolate as much as possible; if you can identify and put a name to things in the image, name them. Also, the image URL may be relevant in order to name or determine certain details in the image, which is {content}. Again, your response must not be more than 3 sentences."""
         summary_result = summarize(summary_prompt_text, image_url=base64_image)
-    else:
-        summary_prompt_text = f"""In a maximum of 3 sentences, summarize this text: {url_content}. Write your answer in sentences, unless bullet form is more appropriate. Do not start with the word 'summary'; just go right in."""
+    elif type == "text":
+        summary_prompt_text = f"""In a maximum of 3 sentences, summarize this text: {content}. Write your answer in sentences, unless bullet form is more appropriate. Do not start with the word 'summary'; just go right in. Again, your response must not be more than 3 sentences."""
         summary_result = summarize(summary_prompt_text)
+    elif type == "screen":
+        summary_prompt_text = f"""In a maximum of 3 sentences, summarize this image. Include as much relevant detail as possible that would be important for someone with vision loss or blindness. Be as specific as possible, such as naming people you can recognize. Describe only what you see in the image but try to extrapolate as much as possible; if you can identify and put a name to things in the image, name them. Also, the image URL may be relevant in order to name or determine certain details in the image, which is {content}. Again, your response must not be more than 3 sentences."""
+        summary_result = summarize(summary_prompt_text, image_url=content)
 
     return summary_result
 
 # Define endpoint for image processing
 @app.post("/process-image")
 async def process_image_endpoint(request: ImageRequest):
-    # Process image with LangChain
     try:
-        # Replace 'process_image' with the exact function name in the notebook
-        langchain_result = process_request(request.image_url, image=True)
+        langchain_result = process_request(request.image_url, type="image")
     except Exception as e:
-        print(f"Error processing image: {e}")  # Log the exception
+        print(f"Error processing image: {e}")
         raise HTTPException(status_code=500, detail="Error processing image")
 
-    # Return the result
     return {"response": langchain_result}
 
 # Define endpoint for text processing
 @app.post("/process-text")
 async def process_text_endpoint(request: TextRequest):
-    # Process image with LangChain
     try:
-        # Replace 'process_image' with the exact function name in the notebook
-        langchain_result = process_request(request.text, image=False)
+        langchain_result = process_request(request.text, type="text")
     except Exception as e:
-        print(f"Error processing image: {e}")  # Log the exception
+        print(f"Error processing image: {e}")
         raise HTTPException(status_code=500, detail="Error processing image")
 
-    # Return the result
+    return {"response": langchain_result}
+
+@app.post("/process-screen")
+async def process_screen_endpoint(request: ScreenRequest):
+    try:
+        langchain_result = process_request(request.base64str, type="screen")
+    except Exception as e:
+        print(f"Error processing image: {e}")
+        raise HTTPException(status_code=500, detail="Error processing image")
+
     return {"response": langchain_result}
 
 # To run the API, use: `uvicorn api_filename:app --reload`
