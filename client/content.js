@@ -33,6 +33,7 @@ document.addEventListener('click', async function (event) {
 
                 alert("Image Summary:\n" + summary);
                 window.speechSynthesis.speak(msg);
+                document.getElementById('contentDiv').innerText="Reading..."+msg
             } catch (error) {
                 console.error("Error processing image:", error);
             }
@@ -41,6 +42,7 @@ document.addEventListener('click', async function (event) {
                 var msg = new SpeechSynthesisUtterance();
                 msg.text = content;
                 window.speechSynthesis.speak(msg);
+                document.getElementById('contentDiv').innerText="Reading..."+msg
                 alert("Content copied: " + content);
             });
         }
