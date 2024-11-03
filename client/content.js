@@ -25,25 +25,31 @@ document.addEventListener('click', async function (event) {
 
     if (content) {
         if (isImage) {
-
             try {
-                const summary = await getSummary(content); // Use the Base64 string for summary
+                const summary = await getSummary(content, "image");
+                console.log(summary)
                 var msg = new SpeechSynthesisUtterance();
                 msg.text = summary;
 
-                alert("Image Summary:\n" + summary);
                 window.speechSynthesis.speak(msg);
+                alert("Image Summary:\n" + summary);
                 document.getElementById('contentDiv').innerText="Reading..."+msg
             } catch (error) {
                 console.error("Error processing image:", error);
             }
         } else {
-            chrome.storage.local.set({ selectedContent: content }, () => {
-                var msg = new SpeechSynthesisUtterance();
-                msg.text = content;
-                window.speechSynthesis.speak(msg);
-                document.getElementById('contentDiv').innerText="Reading..."+msg
-                alert("Content copied: " + content);
+            chrome.storage.local.set({ selectedContent: content }, async () => {
+                try {
+                    const summary = await getSummary(content, "text");
+                    var msg = new SpeechSynthesisUtterance();
+                    msg.text = summary;
+    
+                    window.speechSynthesis.speak(msg);
+                    alert("Text Summary:\n" + summary);
+                    document.getElementById('contentDiv').innerText="Reading..."+msg
+                } catch (error) {
+                    console.error("Error processing text:", error);
+                }
             });
         }
     }
@@ -67,15 +73,25 @@ const urlToBase64 = async (url) => {
     });
 };
 
-const getSummary = async (content) => {
-    // Send the Base64 image data to the backend
-    const response = await fetch('http://localhost:8000/process-image', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ "image_url": content }),
-    });
+const getSummary = async (content, type) => {
+    let response;
+    if (type === "image") {
+        response = await fetch('http://localhost:8000/process-image', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "image_url": content }),
+        });
+    } else if (type === "text") {
+        response = await fetch('http://localhost:8000/process-text', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "text": content }),
+        });
+    }
 
     if (!response.ok) {
         throw new Error('Network response was not ok');
