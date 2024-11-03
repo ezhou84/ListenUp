@@ -1,4 +1,4 @@
-document.getElementById('contentDiv').innerText="Let's start reading"
+document.getElementById('contentDiv').innerText = "Let's start reading"
 
 document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get('selectedContent', (data) => {
@@ -27,7 +27,7 @@ document.getElementById('captureButton').addEventListener('click', async () => {
 
             // Log the image data URL
             console.log("imageDataUrl", imageDataUrl);
-            document.getElementById('contentDiv').innerText="Summarizing..."
+            document.getElementById('contentDiv').innerText = "Summarizing..."
 
             // Send the image data to the backend
             const response = await fetch('http://localhost:8000/process-screen', {
@@ -47,5 +47,32 @@ document.getElementById('captureButton').addEventListener('click', async () => {
     } catch (error) {
         console.error('Error capturing and summarizing:', error);
         document.getElementById('contentDiv').innerText = 'Error occurred while summarizing.';
+    }
+});
+
+// voice activates capture button
+document.getElementById('voiceButton').addEventListener('click', () => {
+    if ('webkitSpeechRecognition' in window) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript.trim().toLowerCase();
+            if (transcript.includes("click") || transcript.includes("press") || transcript.includes("capture")) {
+                document.getElementById('captureButton').click();
+            } else {
+                alert("Command not recognized. Please say 'capture', 'click' or 'press'.");
+            }
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Speech recognition error:", event.error);
+        };
+
+        recognition.start();
+    } else {
+        alert("Your browser does not support speech recognition.");
     }
 });
