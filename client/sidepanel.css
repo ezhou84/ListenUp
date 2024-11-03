@@ -114,7 +114,8 @@ h1 {
 .header {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+  text-align: center;
   gap: 16px;
 }
 
@@ -123,27 +124,29 @@ h1 {
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .transcription {
-  width: 280px;
-  height: 360px;
-  background-color: #F9FAFE;
-  color: #2C91FF;
-  font-size: 16px;
-  line-height: 24px;
-  border-radius: 12px;
-  padding: 1rem;
-  overflow: auto;
-  word-wrap: break-word;
-  margin-top: 20px;
-  margin-bottom: 20px;
-
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto;
+    display: flex;
+    justify-content: center; /* Center child elements horizontally */
+    align-items: center; /* Center child elements vertically if needed */
+    width: 100%; /* Ensure it takes full width of its parent */
+    height: 360px;
+    margin: 0 auto; /* Center the div horizontally */
+    padding: 1rem; /* Optional: Add padding for better appearance */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    background-color: #F9FAFE;
+    color: #2C91FF;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 12px;
+    overflow: auto;
+    word-wrap: break-word;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow-y: auto;
 }
 
 .transcription:hover {
@@ -323,4 +326,13 @@ h1 {
 
 .hidden {
   display: none;
+}
+
+#contentDiv {
+  width: 100%; /* Allow it to take full width of its parent */
+  max-width: 600px; /* Set a maximum width if needed */
+  margin: 0 auto; /* Center the div horizontally */
+  padding: 1rem; /* Optional: Add padding for better appearance */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  text-align: center;
 }
