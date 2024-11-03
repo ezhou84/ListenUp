@@ -5,14 +5,6 @@
 This Google Extension is designed to enhance website accessibility. Users can obtain a summary of webpage content through voice activation or by interacting with the interface, which will then be read aloud. We hope to benefit more people through this!
 
 
-### Built With
-
-
-* 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
