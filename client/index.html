@@ -16,9 +16,9 @@
             <h1>Screen Reader</h1>
         </div>
         <p class="description">
-            Click to capture and summarize the content!
+            Click on capture and summarize the content!
         </p>
-        <form id="aiPromptForm">
+        <!-- <form id="aiPromptForm">
             <input type="text" id="aiPrompt" name="aiPrompt" placeholder="Type your prompt here" required>
             <button type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#2C91FF"
@@ -27,11 +27,11 @@
                         d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
                 </svg>
             </button>
-        </form>
+        </form> -->
 
         <div class="content">
-            <div id="contentDiv"></div>
             <div class="transcription">
+                <div id="contentDiv" style="margin: 10px;"></div>
                 <div class="section-container">
                     <button class="section-option">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff"
@@ -68,7 +68,7 @@
             <div id="record-menu">
                 <div class="control-button-outer">
                     <div class="tooltip">Capture</div>
-                    <button class="record-option">
+                    <button class="record-option" id="captureButton">
                         <div class="button-inner" id="capture">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2C91FF"
                                 class="bi bi-camera" viewBox="0 0 16 16">
@@ -118,12 +118,12 @@
             </div>
         </div>
 
-        <div class="progress-container">
+        <!-- <div class="progress-container">
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
             <div class="timer" id="timer">00:00</div>
-        </div>
+        </div> -->
 
     </div>
 
