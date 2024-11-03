@@ -1,4 +1,3 @@
-// content.js
 document.addEventListener('click', async function (event) {
     let target = event.target;
     let content = '';
@@ -27,13 +26,13 @@ document.addEventListener('click', async function (event) {
         if (isImage) {
             try {
                 const summary = await getSummary(content, "image");
-                console.log(summary)
-                var msg = new SpeechSynthesisUtterance();
-                msg.text = summary;
-
-                window.speechSynthesis.speak(msg);
-               // alert("Image Summary:\n" + summary);
-                document.getElementById('contentDiv').innerText="Reading..."+msg.text
+                const audioData = await getAudio(summary);
+                const audioBlob = new Blob([audioData], { type: 'audio/mp3' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+                audio.playbackRate = 1.15;
+                audio.play();
+                chrome.runtime.sendMessage({ action: "updateContent", message: summary });
             } catch (error) {
                 console.error("Error processing image:", error);
             }
@@ -41,12 +40,13 @@ document.addEventListener('click', async function (event) {
             chrome.storage.local.set({ selectedContent: content }, async () => {
                 try {
                     const summary = await getSummary(content, "text");
-                    var msg = new SpeechSynthesisUtterance();
-                    msg.text = summary;
-    
-                    window.speechSynthesis.speak(msg);
-                   // alert("Text Summary:\n" + summary);
-                    document.getElementById('contentDiv').innerText="Reading..."+msg.text
+                    const audioData = await getAudio(summary);
+                    const audioBlob = new Blob([audioData], { type: 'audio/mp3' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    audio.playbackRate = 1.15;
+                    audio.play();
+                    chrome.runtime.sendMessage({ action: "updateContent", message: summary });
                 } catch (error) {
                     console.error("Error processing text:", error);
                 }
@@ -66,10 +66,10 @@ const urlToBase64 = async (url) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onloadend = () => {
-            resolve(reader.result); // This will be the Base64 string
+            resolve(reader.result);
         };
         reader.onerror = reject;
-        reader.readAsDataURL(blob); // Convert Blob to Base64
+        reader.readAsDataURL(blob);
     });
 };
 
@@ -99,4 +99,29 @@ const getSummary = async (content, type) => {
 
     const data = await response.json();
     return data.response;
+}
+
+const getAudio = async (text) => {
+    const res = await fetch('http://localhost:8000/get-audio/', {
+        method: "POST",
+        body: JSON.stringify({ text: text }),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+	if (!res.ok) {
+		throw new Error(`${res.status} ${res.statusText}\n${await res.text()}`);
+	}
+
+	const responseData = await res.json();
+
+    const binaryString = atob(responseData.audio_data);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return bytes.buffer;
 }

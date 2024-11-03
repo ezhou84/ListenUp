@@ -130,7 +130,6 @@ h1 {
 .transcription {
     display: flex;
     justify-content: center; /* Center child elements horizontally */
-    align-items: center; /* Center child elements vertically if needed */
     width: 100%; /* Ensure it takes full width of its parent */
     height: 360px;
     margin: 0 auto; /* Center the div horizontally */
@@ -331,8 +330,11 @@ h1 {
 #contentDiv {
   width: 100%; /* Allow it to take full width of its parent */
   max-width: 600px; /* Set a maximum width if needed */
+  max-height: 100%;
   margin: 0 auto; /* Center the div horizontally */
   padding: 1rem; /* Optional: Add padding for better appearance */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  text-align: center;
+  text-align: center;  
+  overflow-y: auto; /* Ensure vertical scrolling is enabled */
+  /* line-height: 1.5; */
 }

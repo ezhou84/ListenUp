@@ -3,6 +3,7 @@ import base64
 import os
 from io import BytesIO
 
+import httpx
 import requests
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -15,6 +16,9 @@ from pydantic import BaseModel
 load_dotenv()
 
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
+SPEECHIFY_API_BASE_URL = "https://api.sws.speechify.com"
+SPEECHIFY_API_KEY = os.getenv("SPEECHIFY_API_KEY")
+SPEECHIFY_VOICE_ID = "jack"
 
 def summarize(prompt, image_url=None):
     """Generate summary."""
@@ -54,10 +58,10 @@ def summarize(prompt, image_url=None):
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Adjust this to specify allowed origins
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Define request model
@@ -69,6 +73,9 @@ class TextRequest(BaseModel):
 
 class ScreenRequest(BaseModel):
     base64str: str
+
+class AudioRequest(BaseModel):
+    text: str
 
 def convert_image_to_base64(image_url):
     # Download the image from the URL
@@ -92,13 +99,13 @@ def convert_image_to_base64(image_url):
 def process_request(content, type):
     if type == "image":
         base64_image = convert_image_to_base64(content)
-        summary_prompt_text = f"""In a maximum of 3 sentences, summarize this image. Include as much relevant detail as possible that would be important for someone with vision loss or blindness. Be as specific as possible, such as naming people you can recognize. Describe only what you see in the image but try to extrapolate as much as possible; if you can identify and put a name to things in the image, name them. Also, the image URL may be relevant in order to name or determine certain details in the image, which is {content}. Again, your response must not be more than 3 sentences."""
+        summary_prompt_text = f"""Give a 1 sentence summary of this image. Only 1 sentence. No more than that. Include as much relevant detail as possible that would be important for someone with vision loss or blindness. Be as specific as possible, such as naming people you can recognize. Describe only what you see in the image but try to extrapolate as much as possible; if you can identify and put a name to things in the image, name them. Also, the image URL may be relevant in order to name or determine certain details in the image, which is {content}."""
         summary_result = summarize(summary_prompt_text, image_url=base64_image)
     elif type == "text":
-        summary_prompt_text = f"""In a maximum of 3 sentences, summarize this text: {content}. Write your answer in sentences, unless bullet form is more appropriate. Do not start with the word 'summary'; just go right in. Again, your response must not be more than 3 sentences."""
+        summary_prompt_text = f"""Give a very, very brief summary of this text in at most 2 sentences: {content}. Write your answer in sentences, unless bullet form is more appropriate. Do not start with the word 'summary'; just go right in. Again, your response must not be more than 2 sentences."""
         summary_result = summarize(summary_prompt_text)
     elif type == "screen":
-        summary_prompt_text = f"""In a maximum of 3 sentences, summarize this image. Include as much relevant detail as possible that would be important for someone with vision loss or blindness. Be as specific as possible, such as naming people you can recognize. Describe only what you see in the image but try to extrapolate as much as possible; if you can identify and put a name to things in the image, name them. Also, the image URL may be relevant in order to name or determine certain details in the image, which is {content}. Again, your response must not be more than 3 sentences."""
+        summary_prompt_text = f"""Give a very, very brief summary of this image in at most 2 sentences. Include as much relevant detail as possible that would be important for someone with vision loss or blindness. Be as specific as possible, such as naming people you can recognize. Describe only what you see in the image but try to extrapolate as much as possible; if you can identify and put a name to things in the image, name them. Also, the image URL may be relevant in order to name or determine certain details in the image, which is {content}. Again, your response must not be more than 2 sentences."""
         summary_result = summarize(summary_prompt_text, image_url=content)
 
     return summary_result
@@ -135,4 +142,24 @@ async def process_screen_endpoint(request: ScreenRequest):
 
     return {"response": langchain_result}
 
-# To run the API, use: `uvicorn api_filename:app --reload`
+@app.post("/get-audio/")
+async def get_audio_endpoint(request: AudioRequest):
+    url = f"{SPEECHIFY_API_BASE_URL}/v1/audio/speech"
+    headers = {
+        "Authorization": f"Bearer {SPEECHIFY_API_KEY}",
+        "Content-Type": "application/json",
+    }
+    payload = {
+        "input": f"<speak>{request.text}</speak>",
+        "voice_id": SPEECHIFY_VOICE_ID,
+        "audio_format": "mp3",
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, json=payload, headers=headers)
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.text)
+
+    response_data = response.json()
+    return response_data
