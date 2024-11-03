@@ -22,6 +22,9 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 * npm
+* python
+* Node.js
+* Express.js
 
 ### Installation
 
@@ -52,26 +55,10 @@ To get a local copy up and running follow these simple example steps.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+1. Users can capture their screen and receive summarized content.
+2. Users can obtain descriptions of images.
+3. Users can activate the extension by saying "capture," "click," or "press" the button.
+4. Users can listen to the content read aloud in a natural voice.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
