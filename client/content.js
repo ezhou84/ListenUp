@@ -29,7 +29,7 @@ document.addEventListener('click', async function (event) {
 
             try {
                 const base64Image = await urlToBase64(content); // Convert image URL to Base64
-                const summary = await getSummary(base64Image); // Use the Base64 string for summary
+                const summary = await getSummary(content); // Use the Base64 string for summary
                 var msg = new SpeechSynthesisUtterance();
                 msg.text = summary;
                 console.log("summary", summary);
@@ -53,7 +53,7 @@ document.addEventListener('click', async function (event) {
 
 const urlToBase64 = async (url) => {
     const response = await fetch(url);
-    
+
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
@@ -71,12 +71,12 @@ const urlToBase64 = async (url) => {
 
 const getSummary = async (content) => {
     // Send the Base64 image data to the backend
-    const response = await fetch('http://localhost:8080/summarize', {
+    const response = await fetch('http://localhost:8000/process-image', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ image: content }),
+        body: JSON.stringify({ "image_url": content }),
     });
 
     if (!response.ok) {

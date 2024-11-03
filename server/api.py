@@ -10,6 +10,7 @@ from langchain_core.messages import HumanMessage
 from langchain_mistralai import ChatMistralAI
 from PIL import Image
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
@@ -41,6 +42,26 @@ def image_summarize(prompt, image_url):
 
 # Initialize FastAPI app
 app = FastAPI()
+
+origins = [
+    "*",
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "https://play.ht/blog/speechify-text-to-speech-javascript-api/"
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Define request model
 class ImageRequest(BaseModel):
