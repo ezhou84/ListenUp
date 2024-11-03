@@ -30,18 +30,18 @@ document.getElementById('captureButton').addEventListener('click', async () => {
             document.getElementById('contentDiv').innerText="Summarizing..."
 
             // Send the image data to the backend
-            const response = await fetch('http://localhost:8080/summarize', {
+            const response = await fetch('http://localhost:8000/process-screen', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ image: imageDataUrl }),
+                body: JSON.stringify({ "base64str": imageDataUrl }),
             });
 
             const data = await response.json();
-            document.getElementById('contentDiv').innerText = data.summary || 'No summary returned.';
+            document.getElementById('contentDiv').innerText = data.response || 'No summary returned.';
             var msg = new SpeechSynthesisUtterance();
-            msg.text = data.summary;
+            msg.text = data.response;
             window.speechSynthesis.speak(msg);
         });
     } catch (error) {

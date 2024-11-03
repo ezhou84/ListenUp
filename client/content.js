@@ -32,8 +32,8 @@ document.addEventListener('click', async function (event) {
                 msg.text = summary;
 
                 window.speechSynthesis.speak(msg);
-                alert("Image Summary:\n" + summary);
-                document.getElementById('contentDiv').innerText="Reading..."+msg
+               // alert("Image Summary:\n" + summary);
+                document.getElementById('contentDiv').innerText="Reading..."+msg.text
             } catch (error) {
                 console.error("Error processing image:", error);
             }
@@ -45,8 +45,8 @@ document.addEventListener('click', async function (event) {
                     msg.text = summary;
     
                     window.speechSynthesis.speak(msg);
-                    alert("Text Summary:\n" + summary);
-                    document.getElementById('contentDiv').innerText="Reading..."+msg
+                   // alert("Text Summary:\n" + summary);
+                    document.getElementById('contentDiv').innerText="Reading..."+msg.text
                 } catch (error) {
                     console.error("Error processing text:", error);
                 }
